@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Success - Cinemania Delight</title>
+  <style>
+    body{font-family:'Segoe UI',Tahoma,Arial;background:#0a0a0a;color:#fff;margin:0}
+    header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:#000}
+    .container{max-width:1000px;margin:40px auto;padding:0 20px;text-align:center}
+    .hero{background:linear-gradient(135deg,#6b2f7a,#2b2a59);padding:60px;border-radius:12px}
+    .hero h1{margin:0 0 20px}
+    .hero p{color:#ddd}
+    .btn{margin-top:24px;padding:10px 18px;border-radius:8px;border:2px solid #fff;background:transparent;color:#fff;cursor:pointer}
+    footer{background:#000;padding:40px;margin-top:40px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Cinemania<br><small>Delight</small></div>
+    <div class="user">👤</div>
+  </header>
+
+  <div class="container">
+    <div class="hero" role="main">
+      <h1>Payment successful!</h1>
+      <!-- large celebratory icon (clapper + reel) -->
+      <div style="margin:26px 0;">
+        <svg width="140" height="140" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="64" height="64" rx="8" fill="rgba(255,255,255,0.06)"/>
+          <path d="M6 26h52v24a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V26z" fill="#FFD54F"/>
+          <path d="M6 26l12-10 8 6 12-10 8 6 10-8v8H6z" fill="#FF7043"/>
+          <circle cx="22" cy="42" r="6" fill="#3F51B5"/>
+          <circle cx="22" cy="42" r="2" fill="#FFF"/>
+        </svg>
+      </div>
+
+      <p id="desc" style="max-width:720px;margin:0 auto;color:#e6e0ea;line-height:1.6;">Transaction details have been sent to your email. You can also view your tickets in "My Tickets" on the website or on your smartphone.</p>
+      <div>
+        <button class="btn" id="explore" style="margin-top:28px;padding:12px 20px;border-radius:8px;background:transparent;border:2px solid #fff;color:#fff;cursor:pointer">Explore Movies</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div style="max-width:1000px;margin:0 auto;color:#aaa">Cinemania Delight</div>
+  </footer>
+
+  <script>
+    document.getElementById('explore').addEventListener('click', ()=> window.location.href='home.html');
+  </script>
+</body>
+</html>
