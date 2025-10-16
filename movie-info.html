@@ -794,8 +794,11 @@
             const params = new URLSearchParams();
             params.set('theater', selectedBooking.theaterName);
             params.set('time', selectedBooking.time);
-            // include movie title (encoded) so seat page can show context
-            if (currentMovie && currentMovie.title) params.set('movie', currentMovie.title);
+            // include movie title and movie id so downstream pages can use either
+            if (currentMovie) {
+                if (currentMovie.title) params.set('movie', currentMovie.title);
+                if (currentMovie.id) params.set('movie_id', currentMovie.id);
+            }
             window.location.href = `seat-selection.html?${params.toString()}`;
         }
 

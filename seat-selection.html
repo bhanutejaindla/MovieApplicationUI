@@ -40,7 +40,10 @@
 
     <div class="seat-selection" id="seat-selection">
         <div class="seat-header">
-            <div class="seat-instruction">SELECT A SEAT<br><small style="font-weight:400;">Choose the next seat you will occupy during the film screening</small></div>
+            <div>
+                <div id="movie-title-display" style="font-size:16px;font-weight:700;margin-bottom:6px"></div>
+                <div class="seat-instruction">SELECT A SEAT<br><small style="font-weight:400;">Choose the next seat you will occupy during the film screening</small></div>
+            </div>
             <div class="time-display">
                 <select id="time-dropdown"></select>
                 <div id="time-confirm" style="font-weight:700;">14:40</div>
@@ -76,6 +79,7 @@
         const theater = getQueryParam('theater') || 'Unknown Theater';
         const time = getQueryParam('time') || getQueryParam('t') || '14:40';
         const movie = getQueryParam('movie') || getQueryParam('title') || '';
+        const movie_id = getQueryParam('movie_id') || '';
 
         document.getElementById('time-confirm').textContent = time;
 
@@ -137,7 +141,13 @@
         document.getElementById('btn-return').addEventListener('click', ()=>{ window.history.back(); });
         document.getElementById('btn-confirm').addEventListener('click', ()=>{
             if (chosenSeats.length===0) { alert('Please choose at least one seat to continue.'); return; }
-            const params = new URLSearchParams(); params.set('theater', theater); params.set('time', time); params.set('seats', chosenSeats.join(',')); if (movie) params.set('movie', movie);
+            const params = new URLSearchParams();
+            params.set('theater', theater);
+            params.set('time', time);
+            params.set('seats', chosenSeats.join(','));
+            if (movie) params.set('movie', movie);
+            if (movie_id) params.set('movie_id', movie_id);
+            // navigate to payment page with movie included
             window.location.href = `payment.html?${params.toString()}`;
         });
 
@@ -145,6 +155,9 @@
         (function(){
             // populate time dropdown with the time (future: populate all times)
             const td = document.getElementById('time-dropdown'); td.innerHTML = `<option value="${time}">${time}</option>`;
+            // show movie title if provided
+            const titleDisplay = document.getElementById('movie-title-display');
+            titleDisplay.textContent = movie ? movie.toUpperCase() : '';
             initializeSeatMap(theater, time);
         })();
     </script>
