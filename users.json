@@ -1,0 +1,16 @@
+[
+  {
+    "id": 101,
+    "username": "user_alpha",
+    "phone_no": "+91 9876543210",
+    "email": "user.alpha@example.com",
+    "password": "AlphaPass11@"
+  },
+  {
+    "id": 102,
+    "username": "user_beta",
+    "phone_no": "+91 9876509876",
+    "email": "user.beta@example.com",
+    "password": "BetaPass22@"
+  }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "id": "movie_001",
+        "title": "The Batman (2022)",
+        "image": "the_batman_2022_placeholder_image",
+        "rating": "8.0/10",
+        "duration": "176 min",
+        "certification": "PG-13",
+        "director": "Matt Reeves",
+        "genre": [
+            "Action",
+            "Crime",
+            "Drama"
+        ]
+    },
+    {
+        "id": "movie_002",
+        "title": "Spiderman No Way Home",
+        "image": "spiderman no way home placeholder image",
+        "rating": "8.7/10",
+        "duration": "112 min",
+        "certification": "PG",
+        "director": "Jon Watts",
+        "genre": [
+            "Action",
+            "Adventure",
+            "Sci-Fi"
+        ]
+    },
+    {
+        "id": "movie_003",
+        "title": "Doctor Strange in the Multiverse of Madness",
+        "image": "doctor strange multiverse_of madness placeholder image",
+        "rating": "7.5/10",
+        "duration": "126 min",
+        "certification": "PG-13",
+        "director": "Sam Raimi",
+        "genre": [
+            "Action",
+            "Adventure",
+            "Fantasy"
+        ]
+    }
+]

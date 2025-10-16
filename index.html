@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cinemania Delight - Sign Up</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1350&q=80')
+        no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 40px;
+      border-radius: 12px;
+      width: 360px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #ddd;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 40px 10px 10px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .input-group input:focus {
+      outline: 2px solid #ff3b3b;
+    }
+
+    .input-group .eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 36px;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .error {
+      color: #ff4c4c;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #ff3b3b;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #e63434;
+    }
+
+    .signin-link {
+      text-align: right;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .signin-link a {
+      color: #ff3b3b;
+      text-decoration: none;
+    }
+
+    .signin-link a:hover {
+      text-decoration: underline;
+    }
+
+    .brand {
+      position: absolute;
+      left: 10%;
+      top: 15%;
+      font-size: 32px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 8px black;
+    }
+
+    @media (max-width: 768px) {
+      .brand {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="brand">Cinemania<br>Delight</div>
+
+  <div class="container">
+    <h2>SIGN UP</h2>
+    <form id="signupForm" novalidate>
+      <div class="input-group">
+        <label for="username">User Name</label>
+        <input type="text" id="username" placeholder="John Doe">
+        <div class="error" id="usernameError"></div>
+      </div>
+
+      <div class="input-group">
+        <label for="phone">Enter Phone Number</label>
+        <input type="tel" id="phone" placeholder="+91 9876543210">
+        <div class="error" id="phoneError"></div>
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="john.doe@gmail.com">
+        <div class="error" id="emailError"></div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="********">
+        <span class="eye-icon" id="togglePassword">👁️</span>
+        <div class="error" id="passwordError"></div>
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="********">
+        <span class="eye-icon" id="toggleConfirmPassword">👁️</span>
+        <div class="error" id="confirmPasswordError"></div>
+      </div>
+
+      <button type="submit" class="btn">SIGN UP</button>
+    </form>
+
+    <div class="signin-link">
+      Already have an account? <a href="signin.html">Sign In?</a>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    togglePassword.addEventListener('click', () => {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+    });
+
+    toggleConfirmPassword.addEventListener('click', () => {
+      const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPassword.setAttribute('type', type);
+    });
+
+    // Form validation
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      let valid = true;
+
+      // Clear errors
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+      // Username
+      const username = document.getElementById('username').value.trim();
+      if (username === '') {
+        document.getElementById('usernameError').textContent = 'Username is required.';
+        valid = false;
+      }
+
+      // Phone
+      const phone = document.getElementById('phone').value.trim();
+      const phoneRegex = /^\+?\d{10,13}$/;
+      if (!phoneRegex.test(phone)) {
+        document.getElementById('phoneError').textContent = 'Please enter a valid phone number.';
+        valid = false;
+      }
+
+      // Email
+      const email = document.getElementById('email').value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+        valid = false;
+      }
+
+      // Password
+      const pass = password.value.trim();
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      if (!passwordRegex.test(pass)) {
+        document.getElementById('passwordError').textContent =
+          'Password must be at least 8 characters long, include uppercase, lowercase, number, and special character.';
+        valid = false;
+      }
+
+      // Confirm Password
+      const confirmPass = confirmPassword.value.trim();
+      if (confirmPass !== pass) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+        valid = false;
+      }
+
+      if (valid) {
+        alert('Registration successful! Redirecting to Sign In page...');
+        window.location.href = 'signin.html';
+      }
+    });
+  </script>
+</body>
+</html>

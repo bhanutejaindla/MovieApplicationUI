@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cinemania Delight - Sign Up</title>
+  <style>
+    /* Basic reset & font */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height: 100%; }
+    body{
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #fff;
+      background: url('/mnt/data/WhatsApp Image 2025-10-16 at 21.26.17.jpeg') center/cover no-repeat;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 40px 6%;
+    }
+
+    /* Left brand text */
+    .left-text{
+      font-weight: 800;
+      font-size: 48px;
+      text-shadow: 2px 2px 12px rgba(0,0,0,0.7);
+      line-height: 0.95;
+      color:#fff;
+      width: 40%;
+      max-width: 520px;
+    }
+
+    /* Card on right */
+    .form-container{
+      width: 380px;
+      background: rgba(26,28,33,0.95);
+      padding: 34px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(2px);
+    }
+
+    h2 { text-align:center; margin-bottom:18px; letter-spacing:1px; color:#fff; }
+    label{ display:block; color:#cfcfd1; font-size:13px; margin-bottom:6px; }
+    .input-group{ position:relative; margin-bottom:16px; }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="password"]{
+      width:100%;
+      padding:10px 40px 10px 10px;
+      background:transparent;
+      border:none;
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      color:#fff;
+      font-size:14px;
+      outline:none;
+    }
+    input:focus { border-bottom-color: #ff3b3b; }
+
+    .eye-btn{
+      position:absolute;
+      right:6px;
+      top:34px;
+      width:28px;
+      height:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      background: transparent;
+      border-radius:4px;
+    }
+    .eye-btn svg { width:18px; height:18px; fill: #cfcfd1; }
+
+    .btn{
+      margin-top:8px;
+      background: linear-gradient(180deg,#ff5757,#d93636);
+      border:none;
+      color:#fff;
+      padding:12px;
+      width:100%;
+      border-radius:6px;
+      font-weight:600;
+      cursor:pointer;
+      font-size:15px;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+
+    .signin-text{ text-align:right; margin-top:10px; color:#bfbfc1; font-size:13px; }
+    .signin-text a{ color:#ff6b6b; text-decoration:none; }
+
+    .error{
+      color:#ff7b7b;
+      font-size:12px;
+      margin-top:6px;
+      min-height:16px;
+    }
+
+    .pwd-hint{
+      font-size:12px;
+      color:#bdbdbf;
+      margin-top:6px;
+    }
+
+    @media (max-width:980px){
+      body{ flex-direction:column; padding:36px; gap:28px; }
+      .left-text{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="left-text">Cinemania<br>Delight</div>
+
+  <div class="form-container" role="main" aria-labelledby="signupTitle">
+    <h2 id="signupTitle">SIGN UP</h2>
+
+    <form id="signupForm" novalidate>
+      <!-- Username -->
+      <div class="input-group">
+        <label for="username">User Name</label>
+        <input id="username" name="username" type="text" placeholder="John Doe" autocomplete="name" />
+        <div id="usernameError" class="error" aria-live="polite"></div>
+      </div>
+
+      <!-- Phone -->
+      <div class="input-group">
+        <label for="phone">Enter Phone Number</label>
+        <input id="phone" name="phone" type="tel" placeholder="+91 9876543210" autocomplete="tel" />
+        <div id="phoneError" class="error" aria-live="polite"></div>
+      </div>
+
+      <!-- Email -->
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="john.doe@gmail.com" autocomplete="email" />
+        <div id="emailError" class="error" aria-live="polite"></div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="********" autocomplete="new-password" />
+        <button type="button" class="eye-btn" id="togglePassword" aria-label="Toggle password visibility">
+          <!-- eye (closed by default as 'eye-off' icon) -->
+          <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5c-7 0-11 6.9-11 7s4 7 11 7 11-6.9 11-7-4-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+        </button>
+        <div id="passwordError" class="error" aria-live="polite"></div>
+        <div class="pwd-hint" id="passwordHint">
+          Use 8+ characters, at least 1 uppercase, 1 lowercase, 1 number & 1 special character.
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="********" autocomplete="new-password" />
+        <button type="button" class="eye-btn" id="toggleConfirmPassword" aria-label="Toggle confirm password visibility">
+          <svg id="eyeConfirmIcon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5c-7 0-11 6.9-11 7s4 7 11 7 11-6.9 11-7-4-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+        </button>
+        <div id="confirmPasswordError" class="error" aria-live="polite"></div>
+      </div>
+
+      <button class="btn" type="submit">SIGN UP</button>
+
+      <div class="signin-text">
+        <a href="signin.html">Sign In ?</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Elements
+    const form = document.getElementById('signupForm');
+    const usernameEl = document.getElementById('username');
+    const phoneEl = document.getElementById('phone');
+    const emailEl = document.getElementById('email');
+    const passwordEl = document.getElementById('password');
+    const confirmEl = document.getElementById('confirmPassword');
+
+    const usernameErr = document.getElementById('usernameError');
+    const phoneErr = document.getElementById('phoneError');
+    const emailErr = document.getElementById('emailError');
+    const passwordErr = document.getElementById('passwordError');
+    const confirmErr = document.getElementById('confirmPasswordError');
+
+    // Eye toggle buttons + icons
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const toggleConfirmBtn = document.getElementById('toggleConfirmPassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const eyeConfirmIcon = document.getElementById('eyeConfirmIcon');
+
+    // Generic SVGs for open/closed states
+    const eyeOpenPath = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12zm11 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>';
+    const eyeOffPath = '<path d="M2.3 2.3 1 3.6l3.1 3.1C3 7 1.9 9.3 1 12c0 0 4 7 11 7 2.2 0 4.2-.5 6-1.5l2 2 1.3-1.3L2.3 2.3zM9.5 11.5 7 14c.9.6 1.9 1 3 1 2.2 0 4-1.8 4-4 0-1-.4-2-1-2.8L14.5 8C14 8.4 12.8 9 11 9c-.6 0-1.1-.1-1.6-.5z"/>';
+
+    // Initialize with "eye open" icon (user can click to toggle to 'hidden' style)
+    eyeIcon.innerHTML = eyeOpenPath;
+    eyeConfirmIcon.innerHTML = eyeOpenPath;
+
+    function setIconOpen(svgEl){
+      svgEl.innerHTML = eyeOpenPath;
+      svgEl.style.fill = '#cfcfd1';
+    }
+    function setIconOff(svgEl){
+      svgEl.innerHTML = eyeOffPath;
+      svgEl.style.fill = '#cfcfd1';
+    }
+
+    // Toggle functions
+    togglePasswordBtn.addEventListener('click', () => {
+      const t = passwordEl.type === 'password' ? 'text' : 'password';
+      passwordEl.type = t;
+      if(t === 'text') setIconOff(eyeIcon); else setIconOpen(eyeIcon);
+    });
+
+    toggleConfirmBtn.addEventListener('click', () => {
+      const t = confirmEl.type === 'password' ? 'text' : 'password';
+      confirmEl.type = t;
+      if(t === 'text') setIconOff(eyeConfirmIcon); else setIconOpen(eyeConfirmIcon);
+    });
+
+    // Regexes
+    // Email: common, generic pattern (not perfect RFC but practical)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Password: min 8 chars, at least 1 lowercase, 1 uppercase, 1 digit, 1 special
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    // Phone: allow +country and 10-14 digits total; adjust as needed
+    const phoneRegex = /^\+?\d{10,14}$/;
+
+    // Clear error helpers
+    const clearError = (el) => { el.textContent = ''; };
+    usernameEl.addEventListener('input', ()=> clearError(usernameErr));
+    phoneEl.addEventListener('input', ()=> clearError(phoneErr));
+    emailEl.addEventListener('input', ()=> clearError(emailErr));
+    passwordEl.addEventListener('input', ()=> {
+      clearError(passwordErr);
+      // live password strength hint (simple)
+      if(passwordEl.value.length && !passwordRegex.test(passwordEl.value)){
+        passwordErr.textContent = 'Password must be 8+ chars, contain upper & lower case letters, a number and a special character.';
+      }
+    });
+    confirmEl.addEventListener('input', ()=> {
+      clearError(confirmErr);
+      if(confirmEl.value && passwordEl.value && confirmEl.value !== passwordEl.value){
+        confirmErr.textContent = 'Passwords do not match.';
+      }
+    });
+
+    // Form submit validation
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+
+      // Reset errors
+      [usernameErr, phoneErr, emailErr, passwordErr, confirmErr].forEach(e=>e.textContent='');
+
+      let valid = true;
+      const username = usernameEl.value.trim();
+      const phone = phoneEl.value.trim();
+      const email = emailEl.value.trim();
+      const pwd = passwordEl.value;
+      const conf = confirmEl.value;
+
+      // Username
+      if(!username){
+        usernameErr.textContent = 'Username is required.';
+        valid = false;
+      }
+
+      // Phone
+      if(!phone){
+        phoneErr.textContent = 'Phone is required.';
+        valid = false;
+      } else if(!phoneRegex.test(phone)){
+        phoneErr.textContent = 'Enter a valid phone (digits, optional +country, 10-14 digits).';
+        valid = false;
+      }
+
+      // Email
+      if(!email){
+        emailErr.textContent = 'Email is required.';
+        valid = false;
+      } else if(!emailRegex.test(email)){
+        emailErr.textContent = 'Please enter a valid email address.';
+        valid = false;
+      }
+
+      // Password
+      if(!pwd){
+        passwordErr.textContent = 'Password is required.';
+        valid = false;
+      } else if(!passwordRegex.test(pwd)){
+        passwordErr.textContent = 'Password must have 8+ chars, uppercase, lowercase, number & special character.';
+        valid = false;
+      }
+
+      // Confirm password
+      if(!conf){
+        confirmErr.textContent = 'Confirm your password.';
+        valid = false;
+      } else if(conf !== pwd){
+        confirmErr.textContent = 'Passwords do not match.';
+        valid = false;
+      }
+
+      if(!valid){
+        // focus first error field
+        const firstError = [usernameErr, phoneErr, emailErr, passwordErr, confirmErr].find(e=> e.textContent );
+        if(firstError === usernameErr) usernameEl.focus();
+        else if(firstError === phoneErr) phoneEl.focus();
+        else if(firstError === emailErr) emailEl.focus();
+        else if(firstError === passwordErr) passwordEl.focus();
+        else if(firstError === confirmErr) confirmEl.focus();
+        return;
+      }
+
+      // All validations passed -> simulate registration success and redirect
+      // In real app: send data to server, handle backend errors (username/email taken)
+      alert('Registration successful! Redirecting to sign in...');
+      window.location.href = 'signin.html';
+    });
+  </script>
+</body>
+</html>

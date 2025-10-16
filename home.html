@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinemania Delight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 14px;
+            font-weight: normal;
+            color: #ddd;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: #fff;
+            width: 300px;
+            outline: none;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Movie Sections */
+        .movie-section {
+            padding: 40px 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .carousel-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .carousel-btn {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .movies-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+
+        .movies-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .movie-card {
+            min-width: 200px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .movie-poster {
+            width: 200px;
+            height: 280px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .movie-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .star {
+            color: #ffd700;
+        }
+
+        .duration {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .certification {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 50px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .newsletter h3 {
+            margin-bottom: 15px;
+            color: #a8c0ff;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .social-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            Cinemania<br>
+            <span>Delight</span>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search">
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div class="loading">Loading movies...</div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">
+                    Cinemania<br>
+                    Delight
+                </div>
+                <div class="social-icons">
+                    <div class="social-icon">📷</div>
+                    <div class="social-icon">🐦</div>
+                    <div class="social-icon">📘</div>
+                </div>
+            </div>
+
+            <div class="newsletter">
+                <h3>Join our newsletter</h3>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your Email">
+                    <button type="submit" class="newsletter-btn">→</button>
+                </form>
+            </div>
+
+            <div class="footer-links">
+                <h4>Menu</h4>
+                <ul>
+                    <li><a href="#">Theaters</a></li>
+                    <li><a href="#">Mall</a></li>
+                    <li><a href="#">Playcenter</a></li>
+                    <li><a href="#">Group Events</a></li>
+                    <li><a href="#">Behind the Screens</a></li>
+                    <li><a href="#">Stores</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>More</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>Terms of use &nbsp;&nbsp;|&nbsp;&nbsp; Privacy Policy</p>
+        </div>
+    </footer>
+
+    <script>
+        let moviesData = {};
+        let categoriesData = [];
+
+        // Fetch movies and categories data
+        async function loadData() {
+            try { 
+                // Fetch movies data
+                const moviesResponse = await fetch('movies.json');
+                const movies = await moviesResponse.json();
+                
+                // Convert array to object for easier lookup
+                movies.forEach(movie => {
+                    moviesData[movie.id] = movie;
+                });
+
+                // Fetch categories mapping
+                const categoriesResponse = await fetch('movies-section.json');
+                categoriesData = await categoriesResponse.json();
+
+                // Render the page
+                renderMovieSections();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('main-content').innerHTML = 
+                    '<div class="loading">Error loading movies. Please ensure movies.json and movies-mapping.json are available.</div>';
+            }
+        }
+
+        // Render all movie sections
+        function renderMovieSections() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = '';
+
+            categoriesData.forEach(category => {
+                const section = createMovieSection(category);
+                mainContent.appendChild(section);
+            });
+
+            // Add carousel functionality
+            addCarouselControls();
+        }
+
+        // Create a movie section
+        function createMovieSection(category) {
+            const section = document.createElement('div');
+            section.className = 'movie-section';
+
+            const header = document.createElement('div');
+            header.className = 'section-header';
+            header.innerHTML = `
+                <h2 class="section-title">${category.name}</h2>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" data-section="${category.name}">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-btn next-btn" data-section="${category.name}">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            const moviesContainer = document.createElement('div');
+            moviesContainer.className = 'movies-container';
+            moviesContainer.dataset.section = category.name;
+
+            category.movie_ids.forEach(movieId => {
+                const movie = moviesData[movieId];
+                if (movie) {
+                    const movieCard = createMovieCard(movie);
+                    moviesContainer.appendChild(movieCard);
+                }
+            });
+
+            section.appendChild(header);
+            section.appendChild(moviesContainer);
+
+            return section;
+        }
+
+        // Create a movie card
+        function createMovieCard(movie) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+
+            card.innerHTML = `
+                <img src="${movie.image}" alt="${movie.title}" class="movie-poster">
+                <div class="movie-title">${movie.title}</div>
+                <div class="movie-info">
+                    <div class="rating">
+                        <span class="star">⭐</span>
+                        <span>${movie.rating}</span>
+                    </div>
+                    <div class="duration">
+                        <span>🕐</span>
+                        <span>${movie.duration}</span>
+                    </div>
+                    <div class="certification">${movie.certification}</div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Add carousel controls functionality
+        function addCarouselControls() {
+            document.querySelectorAll('.prev-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const section = btn.dataset.section;
+                    const container = document.querySelector(`.movies-container[data-section="${section}"]`);
+                    container.scrollBy({ left: -440, behavior: 'smooth' });
+                });
+            });
+
+            document.querySelectorAll('.next-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const section = btn.dataset.section;
+                    const container = document.querySelector(`.movies-container[data-section="${section}"]`);
+                    container.scrollBy({ left: 440, behavior: 'smooth' });
+                });
+            });
+        }
+
+        // Newsletter form submission
+        document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for subscribing!');
+        });
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
