@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Select Seats - Cinemania Delight</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#0a0a0a; color:#fff; padding:30px; }
+        .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+        .logo { font-weight:700; }
+        .seat-selection { background: #0f0f10; border-radius: 12px; padding: 20px; margin-top: 20px; }
+        .seat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+        .seat-instruction { font-size:18px; font-weight:700; }
+        .time-display { display:flex; align-items:center; gap:10px; font-size:16px; color:#fff; }
+          /* create 6 seats, an aisle, then 6 seats to mimic a cinema layout
+              Use fixed square seats so the grid matches the screenshot */
+          .seat-map { display:grid; grid-template-columns: repeat(6, 48px) 48px repeat(6, 48px); gap:10px; margin:18px 0; align-items: center; justify-content: center; }
+          .aisle { width:48px; height:48px; background:transparent; }
+    .seat { width:48px; height:48px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; border:2px solid rgba(255,255,255,0.12); color:#111; background:#e0e0e0; box-sizing:border-box; }
+    .seat.empty { background:#cfcfcf; color:#111; }
+    .seat.filled { background:#e74c3c; color:#fff; cursor:not-allowed; border-color:rgba(0,0,0,0.2); }
+    .seat.chosen { background:#2ecc71; color:#fff; border-color:rgba(0,0,0,0.2); }
+        .screen-banner { background:#25a0ff; padding:10px; text-align:center; color:#fff; border-radius:6px; margin:18px 0; }
+        .seat-legend { display:flex; gap:12px; margin-top:12px; align-items:center; color:#ddd; }
+        .legend-item { display:flex; gap:8px; align-items:center; }
+        .legend-box { width:18px; height:18px; border-radius:4px; }
+        .seat-footer { display:flex; justify-content:space-between; align-items:center; margin-top:18px; gap:12px; }
+        .summary-panel { background:#111; padding:16px; border-radius:8px; color:#fff; min-width:260px; }
+        .btn-row { display:flex; gap:12px; }
+        .btn-return { background:transparent; border:1px solid #777; color:#fff; padding:10px 18px; border-radius:6px; cursor:pointer; }
+        .btn-confirm { background:#e50914; border:none; color:#fff; padding:10px 18px; border-radius:6px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Cinemania <br><small>Delight</small></div>
+        <div class="search"> <input placeholder="Search" style="padding:8px;border-radius:6px;border:1px solid #333;background:transparent;color:#fff;"> </div>
+        <div class="user-icon">👤</div>
+    </div>
+
+    <div class="seat-selection" id="seat-selection">
+        <div class="seat-header">
+            <div class="seat-instruction">SELECT A SEAT<br><small style="font-weight:400;">Choose the next seat you will occupy during the film screening</small></div>
+            <div class="time-display">
+                <select id="time-dropdown"></select>
+                <div id="time-confirm" style="font-weight:700;">14:40</div>
+            </div>
+        </div>
+
+        <div class="seat-map" id="seat-map"></div>
+
+        <div class="screen-banner">Cinema Screen Here</div>
+
+        <div class="seat-legend">
+            <div class="legend-item"><div class="legend-box" style="background:#e74c3c"></div><div>Filled</div></div>
+            <div class="legend-item"><div class="legend-box" style="background:#cfcfcf"></div><div>Empty</div></div>
+            <div class="legend-item"><div class="legend-box" style="background:#2ecc71"></div><div>Chosen</div></div>
+        </div>
+
+        <div class="seat-footer">
+            <div class="summary-panel" id="summary-panel">
+                <div>Total: <span id="summary-total">Rs. 0</span></div>
+                <div>Seat: <span id="summary-seats">-</span></div>
+            </div>
+            <div class="btn-row">
+                <button class="btn-return" id="btn-return">RETURN</button>
+                <button class="btn-confirm" id="btn-confirm">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Read query params: theater, time, seats (optional), movie
+        function getQueryParam(name) { return new URLSearchParams(window.location.search).get(name); }
+
+        const theater = getQueryParam('theater') || 'Unknown Theater';
+        const time = getQueryParam('time') || getQueryParam('t') || '14:40';
+        const movie = getQueryParam('movie') || getQueryParam('title') || '';
+
+        document.getElementById('time-confirm').textContent = time;
+
+        // seat logic (extracted from movie-info)
+        function generateSeats() {
+            const rows = ['A','B','C','D','E','F','G','H','I','J','K'];
+            const cols = 12;
+            const seats = [];
+            rows.forEach(r => { for (let c = 1; c <= cols; c++) seats.push({ id:`${r}${c}` }); });
+            return seats;
+        }
+
+        function getFilledSeatsFor(theaterName, time) { return ['C9','C10']; }
+
+        let chosenSeats = [];
+        let seatPrice = 50000;
+
+        function initializeSeatMap(theaterName, time) {
+            const seatMapEl = document.getElementById('seat-map'); seatMapEl.innerHTML=''; chosenSeats=[];
+            const seats = generateSeats(); const filled = getFilledSeatsFor(theaterName, time);
+
+            // Render seats row by row with an aisle gap after column 6
+            const rows = ['A','B','C','D','E','F','G','H','I','J','K'];
+            rows.forEach(r => {
+                // first 6 seats
+                for (let c = 1; c <= 6; c++) {
+                    const id = `${r}${c}`;
+                    const btn = document.createElement('div'); btn.className='seat empty'; btn.textContent=id; btn.dataset.seat=id;
+                    if (filled.includes(id)) { btn.className='seat filled'; }
+                    else btn.addEventListener('click', ()=>toggleSeatSelection(btn));
+                    seatMapEl.appendChild(btn);
+                }
+
+                // aisle placeholder
+                const aisle = document.createElement('div'); aisle.className = 'aisle'; seatMapEl.appendChild(aisle);
+
+                // next 6 seats (7-12)
+                for (let c = 7; c <= 12; c++) {
+                    const id = `${r}${c}`;
+                    const btn = document.createElement('div'); btn.className='seat empty'; btn.textContent=id; btn.dataset.seat=id;
+                    if (filled.includes(id)) { btn.className='seat filled'; }
+                    else btn.addEventListener('click', ()=>toggleSeatSelection(btn));
+                    seatMapEl.appendChild(btn);
+                }
+            });
+
+            updateSummary();
+        }
+
+        function toggleSeatSelection(btn) {
+            const seatId = btn.dataset.seat;
+            if (btn.classList.contains('chosen')) { btn.classList.remove('chosen'); btn.classList.add('empty'); chosenSeats = chosenSeats.filter(s=>s!==seatId); }
+            else { btn.classList.remove('empty'); btn.classList.add('chosen'); chosenSeats.push(seatId); }
+            updateSummary();
+        }
+
+        function updateSummary() { const total = chosenSeats.length * seatPrice; document.getElementById('summary-total').textContent=`Rs. ${total.toLocaleString()}`; document.getElementById('summary-seats').textContent = chosenSeats.length ? chosenSeats.join(', ') : '-'; }
+
+        document.getElementById('btn-return').addEventListener('click', ()=>{ window.history.back(); });
+        document.getElementById('btn-confirm').addEventListener('click', ()=>{
+            if (chosenSeats.length===0) { alert('Please choose at least one seat to continue.'); return; }
+            const params = new URLSearchParams(); params.set('theater', theater); params.set('time', time); params.set('seats', chosenSeats.join(',')); if (movie) params.set('movie', movie);
+            window.location.href = `payment.html?${params.toString()}`;
+        });
+
+        // init
+        (function(){
+            // populate time dropdown with the time (future: populate all times)
+            const td = document.getElementById('time-dropdown'); td.innerHTML = `<option value="${time}">${time}</option>`;
+            initializeSeatMap(theater, time);
+        })();
+    </script>
+</body>
+</html>

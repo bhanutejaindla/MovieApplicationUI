@@ -393,6 +393,9 @@
             transform: translateY(-2px);
         }
 
+        /* Seat selection styles */
+        /* Seat selection styles moved to seat-selection.html */
+
         /* Footer */
         footer {
             background: #000;
@@ -598,6 +601,8 @@
                 <div class="booking-note">* Seat selection can be done after this</div>
                 <button class="book-now-btn" onclick="bookNow()">BOOK NOW</button>
             </div>
+
+            <!-- Seat selection moved to separate page: seat-selection.html -->
         </div>
     </div>
 
@@ -766,17 +771,32 @@
             event.target.style.background = 'rgba(100, 100, 255, 0.6)';
             event.target.style.borderColor = 'rgba(100, 100, 255, 0.8)';
 
+            // Update time dropdown and confirmed time in seat panel
+            const timeDropdown = document.getElementById('time-dropdown');
+            if (timeDropdown) {
+                // populate with the selected time for now (could add more times)
+                timeDropdown.innerHTML = `<option value="${time}">${time}</option>`;
+                document.getElementById('time-confirm').textContent = time;
+            }
+
             // Scroll to booking card on mobile
             document.getElementById('booking-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         // Book now
         function bookNow() {
-            if (selectedBooking) {
-                alert(`Booking confirmed!\n\nTheater: ${selectedBooking.theaterName}\nType: ${selectedBooking.type}\nTime: ${selectedBooking.time}\n\nProceeding to seat selection...`);
-            } else {
+            if (!selectedBooking) {
                 alert('Please select a showtime first!');
+                return;
             }
+
+            // Redirect to separate seat selection page with theater/time/movie params
+            const params = new URLSearchParams();
+            params.set('theater', selectedBooking.theaterName);
+            params.set('time', selectedBooking.time);
+            // include movie title (encoded) so seat page can show context
+            if (currentMovie && currentMovie.title) params.set('movie', currentMovie.title);
+            window.location.href = `seat-selection.html?${params.toString()}`;
         }
 
         // Search functionality
@@ -790,6 +810,8 @@
 
         // Load data on page load
         loadData();
+
+        // Seat selection logic moved to `seat-selection.html`
     </script>
 </body>
 </html>
