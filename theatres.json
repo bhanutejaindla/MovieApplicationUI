@@ -1,0 +1,71 @@
+[
+  {
+    "id": 101,
+    "name": "GRAND INDONESIA CGV",
+    "location": "Jakarta",
+    "logo": "cgv logo",
+    "showtimes": [
+      {
+        "id": 1011,
+        "type": "REGULAR 2D",
+        "price_min": 45000,
+        "price_max": 50000,
+        "times": ["11:00", "13:45", "14:40", "15:40", "17:15", "18:15", "20:00", "21:00"]
+      },
+      {
+        "id": 1012,
+        "type": "GOLD CLASS 2D",
+        "price": 100000,
+        "times": ["12:40", "15:40", "17:10", "18:35"]
+      },
+      {
+        "id": 1013,
+        "type": "VELVET 2D",
+        "price": 100000,
+        "times": ["12:15", "13:45", "14:50"]
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "name": "MANGGA DUA SQUARE CINEPOLIS",
+    "location": "Jakarta",
+    "logo": "cinepolis logo",
+    "showtimes": [
+      {
+        "id": 1021,
+        "type": "REGULAR 2D",
+        "price": 30000,
+        "times": ["13:45", "17:15", "20:00"]
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "name": "PLAZA INDONESIA XXI",
+    "location": "Jakarta",
+    "logo": "xxi logo",
+    "showtimes": [
+      {
+        "id": 1031,
+        "type": "REGULAR 2D",
+        "price": 50000,
+        "times": ["12:10", "16:45", "19:45"]
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "name": "STUDIO XXI BANDUNG",
+    "location": "Bandung",
+    "logo": "xxi logo",
+    "showtimes": [
+      {
+        "id": 1041,
+        "type": "REGULAR 2D",
+        "price": 40000,
+        "times": ["11:30", "14:00", "16:30", "19:00"]
+      }
+    ]
+  }
+]

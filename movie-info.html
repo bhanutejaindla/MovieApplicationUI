@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedules - Cinemania Delight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: #000;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 12px;
+            font-weight: normal;
+            color: #ddd;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: #fff;
+            width: 300px;
+            outline: none;
+        }
+
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px 50px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Left Panel - Schedules */
+        .schedules-panel {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        /* Date Selector */
+        .date-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .date-btn {
+            min-width: 80px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .date-btn.active {
+            background: #e50914;
+            border-color: #e50914;
+        }
+
+        .date-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .date-day {
+            font-size: 12px;
+            display: block;
+        }
+
+        .date-date {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        /* Location Selector */
+        .location-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .location-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .location-dropdown {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .filter-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 15px;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Theater List */
+        .theater-list {
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .theater-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .theater-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .theater-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theater-logo {
+            width: 40px;
+            height: 40px;
+            background: #f5a623;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .theater-logo.cgv { background: #e50914; }
+        .theater-logo.cinepolis { background: #0066cc; }
+        .theater-logo.xxi { background: #f5a623; }
+
+        .theater-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .theater-location {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .theater-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-cgv { background: #e50914; color: #fff; }
+        .badge-cinepolis { background: #0066cc; color: #fff; }
+        .badge-xxi { background: #f5a623; color: #000; }
+
+        /* Showtime Section */
+        .showtime-section {
+            margin-bottom: 20px;
+        }
+
+        .showtime-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .showtime-type {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .showtime-price {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .showtime-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .time-slot {
+            background: rgba(100, 100, 255, 0.3);
+            border: 1px solid rgba(100, 100, 255, 0.5);
+            border-radius: 6px;
+            padding: 8px 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .time-slot:hover {
+            background: rgba(100, 100, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Right Panel - Movie Details */
+        .movie-panel {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .movie-poster-container {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .movie-details {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .movie-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-label {
+            color: #aaa;
+        }
+
+        .detail-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Booking Card */
+        .booking-card {
+            background: linear-gradient(135deg, #4a5fcf 0%, #3d4db7 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            display: block;
+        }
+
+        .booking-theater {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .booking-date {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .booking-time-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .booking-type {
+            font-weight: 600;
+        }
+
+        .booking-time {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .booking-note {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .book-now-btn {
+            width: 100%;
+            background: #e50914;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .book-now-btn:hover {
+            background: #c40812;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 50px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .newsletter h3 {
+            margin-bottom: 15px;
+            color: #a8c0ff;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            Cinemania<br>
+            <span>Delight</span>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search">
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Panel - Schedules -->
+        <div class="schedules-panel">
+            <h1 class="page-title">SCHEDULES</h1>
+            <p class="subtitle">Select the schedule of the movie you want to watch</p>
+
+            <!-- Date Selector -->
+            <div class="date-selector">
+                <button class="date-btn">
+                    <span class="date-date">13 Dec</span>
+                    <span class="date-day">WED</span>
+                </button>
+                <button class="date-btn active">
+                    <span class="date-date">14 Dec</span>
+                    <span class="date-day">THU</span>
+                </button>
+                <button class="date-btn">
+                    <span class="date-date">15 Dec</span>
+                    <span class="date-day">FRI</span>
+                </button>
+                <button class="date-btn">
+                    <span class="date-date">16 Dec</span>
+                    <span class="date-day">SAT</span>
+                </button>
+                <button class="date-btn">
+                    <span class="date-date">17 Dec</span>
+                    <span class="date-day">SUN</span>
+                </button>
+            </div>
+
+            <!-- Location Selector -->
+            <div class="location-selector">
+                <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <select class="location-dropdown" id="location-select">
+                    <option value="Jakarta">JAKARTA</option>
+                    <option value="Bandung">Bandung</option>
+                </select>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-box" style="flex: 1;">
+                    <input type="text" id="search-input" placeholder="Grand Indonesia" style="background: transparent; border: none; color: #fff; outline: none; width: 100%;">
+                    <span>🔍</span>
+                </div>
+                <div class="filter-box">Studio ▼</div>
+                <div class="filter-box">Seat ▼</div>
+                <div class="filter-box">Cinema ▼</div>
+            </div>
+
+            <!-- Theater List -->
+            <div class="theater-list" id="theater-list">
+                <!-- Theaters will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Right Panel - Movie Details -->
+        <div class="movie-panel">
+            <div class="movie-poster-container">
+                <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?w=600&h=800&fit=crop" alt="Spiderman" class="movie-poster" id="movie-poster">
+            </div>
+
+            <div class="movie-details">
+                <h2 class="movie-title" id="movie-title">SPIDERMAN: NO WAY HOME</h2>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Genre</span>
+                    <span class="detail-value" id="movie-genre">Action</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Duration</span>
+                    <span class="detail-value" id="movie-duration">2 hours 28 minutes</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Director</span>
+                    <span class="detail-value" id="movie-director">Jon Watts</span>
+                </div>
+
+                <div class="detail-row" style="border-bottom: none;">
+                    <span class="detail-label">Age Rating</span>
+                    <span class="detail-value" id="movie-rating">SU</span>
+                </div>
+            </div>
+
+            <!-- Booking Card (initially hidden) -->
+            <div class="booking-card" id="booking-card">
+                <div class="booking-theater" id="booking-theater">GRAND INDONESIA CGV</div>
+                <div class="booking-date" id="booking-date">16 December 2024</div>
+                <div class="booking-time-type">
+                    <div class="booking-type" id="booking-type">REGULAR 2D</div>
+                    <div class="booking-time" id="booking-time">14:40</div>
+                </div>
+                <div class="booking-note">* Seat selection can be done after this</div>
+                <button class="book-now-btn" onclick="bookNow()">BOOK NOW</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Cinemania<br>Delight</div>
+                <div class="social-icons">
+                    <div class="social-icon">📷</div>
+                    <div class="social-icon">🐦</div>
+                    <div class="social-icon">📘</div>
+                </div>
+            </div>
+
+            <div class="newsletter">
+                <h3>Join our newsletter</h3>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your Email">
+                    <button type="submit" class="newsletter-btn">→</button>
+                </form>
+            </div>
+
+            <div class="footer-links">
+                <h4>Menu</h4>
+                <ul>
+                    <li><a href="#">Theaters</a></li>
+                    <li><a href="#">Mall</a></li>
+                    <li><a href="#">Playcenter</a></li>
+                    <li><a href="#">Group Events</a></li>
+                    <li><a href="#">Behind the Screens</a></li>
+                    <li><a href="#">Stores</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>More</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>Terms of use &nbsp;&nbsp;|&nbsp;&nbsp; Privacy Policy</p>
+        </div>
+    </footer>
+
+    <script>
+        let theatersData = [];
+        let currentMovie = {};
+        let selectedBooking = null;
+        let searchQuery = '';
+
+        // Fetch data
+        async function loadData() {
+            try {
+                // Fetch theaters data
+                const theatersResponse = await fetch('theaters.json');
+                theatersData = await theatersResponse.json();
+
+                // Fetch movie data (assuming we're showing Spiderman)
+                const moviesResponse = await fetch('movies.json');
+                const movies = await moviesResponse.json();
+                currentMovie = movies.find(m => m.id === 'movie_002') || movies[0];
+
+                // Update movie details
+                updateMovieDetails();
+
+                // Render theaters
+                renderTheaters();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('theater-list').innerHTML = 
+                    '<p style="color: #aaa;">Error loading theaters. Please ensure theaters.json and movies.json are available.</p>';
+            }
+        }
+
+        // Update movie details panel
+        function updateMovieDetails() {
+            document.getElementById('movie-title').textContent = currentMovie.title.toUpperCase();
+            document.getElementById('movie-genre').textContent = currentMovie.genre.join(', ');
+            document.getElementById('movie-duration').textContent = currentMovie.duration;
+            document.getElementById('movie-director').textContent = currentMovie.director;
+            document.getElementById('movie-rating').textContent = currentMovie.certification;
+            document.getElementById('movie-poster').src = currentMovie.image;
+        }
+
+        // Render theaters
+        function renderTheaters() {
+            const theaterList = document.getElementById('theater-list');
+            const selectedLocation = document.getElementById('location-select').value;
+            
+            // Filter theaters by location and search query
+            const filteredTheaters = theatersData.filter(t => {
+                const matchesLocation = t.location === selectedLocation;
+                const matchesSearch = searchQuery === '' || 
+                    t.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesLocation && matchesSearch;
+            });
+
+            if (filteredTheaters.length === 0) {
+                theaterList.innerHTML = '<p style="color: #aaa; text-align: center; padding: 20px;">No theaters found matching your search.</p>';
+                return;
+            }
+
+            theaterList.innerHTML = filteredTheaters.map(theater => {
+                const logoClass = theater.name.includes('CGV') ? 'cgv' : 
+                                 theater.name.includes('CINEPOLIS') ? 'cinepolis' : 'xxi';
+                const badgeClass = theater.name.includes('CGV') ? 'badge-cgv' : 
+                                  theater.name.includes('CINEPOLIS') ? 'badge-cinepolis' : 'badge-xxi';
+                const badgeText = theater.name.includes('CGV') ? 'CGV' : 
+                                 theater.name.includes('CINEPOLIS') ? 'CINÉPOLIS' : 'XXI';
+
+                return `
+                    <div class="theater-item">
+                        <div class="theater-header">
+                            <div class="theater-info">
+                                <div class="theater-logo ${logoClass}">${badgeText[0]}</div>
+                                <div>
+                                    <div class="theater-name">${theater.name}</div>
+                                    <div class="theater-location">Location: ${theater.location}</div>
+                                </div>
+                            </div>
+                            <div class="theater-badge ${badgeClass}">${badgeText}</div>
+                        </div>
+
+                        ${theater.showtimes.map(showtime => `
+                            <div class="showtime-section">
+                                <div class="showtime-header">
+                                    <div class="showtime-type">${showtime.type}</div>
+                                    <div class="showtime-price">
+                                        ${showtime.price ? `Rp. ${showtime.price.toLocaleString()}` : 
+                                          `Rp. ${showtime.price_min.toLocaleString()} - ${showtime.price_max.toLocaleString()}`}
+                                    </div>
+                                </div>
+                                <div class="showtime-slots">
+                                    ${showtime.times.map(time => `
+                                        <button class="time-slot" onclick="selectShowtime('${theater.name}', '${showtime.type}', '${time}')">
+                                            ${time}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Select showtime
+        function selectShowtime(theaterName, type, time) {
+            selectedBooking = { theaterName, type, time };
+            
+            // Update booking card
+            document.getElementById('booking-theater').textContent = theaterName;
+            document.getElementById('booking-type').textContent = type;
+            document.getElementById('booking-time').textContent = time;
+            document.getElementById('booking-date').textContent = '16 December 2024';
+            
+            // Highlight selected time slot
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.style.background = 'rgba(100, 100, 255, 0.3)';
+                slot.style.borderColor = 'rgba(100, 100, 255, 0.5)';
+            });
+            event.target.style.background = 'rgba(100, 100, 255, 0.6)';
+            event.target.style.borderColor = 'rgba(100, 100, 255, 0.8)';
+
+            // Scroll to booking card on mobile
+            document.getElementById('booking-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Book now
+        function bookNow() {
+            if (selectedBooking) {
+                alert(`Booking confirmed!\n\nTheater: ${selectedBooking.theaterName}\nType: ${selectedBooking.type}\nTime: ${selectedBooking.time}\n\nProceeding to seat selection...`);
+            } else {
+                alert('Please select a showtime first!');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTheaters();
+        });
+
+        // Location change handler
+        document.getElementById('location-select').addEventListener('change', renderTheaters);
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
