@@ -296,7 +296,7 @@
             <span>Delight</span>
         </div>
         <div class="search-container">
-            <input type="text" class="search-box" placeholder="Search">
+            <input type="text" class="search-box" placeholder="Search for movies...">
             <div class="user-icon">👤</div>
         </div>
     </header>
@@ -354,32 +354,31 @@
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script>
         let moviesData = {};
         let categoriesData = [];
+        let allMoviesArray = [];
 
         // Fetch movies and categories data
         async function loadData() {
             try { 
-                // Fetch movies data
                 const moviesResponse = await fetch('movies.json');
                 const movies = await moviesResponse.json();
-                
-                // Convert array to object for easier lookup
+                allMoviesArray = movies;
+
                 movies.forEach(movie => {
                     moviesData[movie.id] = movie;
                 });
 
-                // Fetch categories mapping
                 const categoriesResponse = await fetch('movies-section.json');
                 categoriesData = await categoriesResponse.json();
 
-                // Render the page
                 renderMovieSections();
             } catch (error) {
                 console.error('Error loading data:', error);
                 document.getElementById('main-content').innerHTML = 
-                    '<div class="loading">Error loading movies. Please ensure movies.json and movies-mapping.json are available.</div>';
+                    '<div class="loading">Error loading movies. Please ensure movies.json and movies-section.json are available.</div>';
             }
         }
 
@@ -393,7 +392,6 @@
                 mainContent.appendChild(section);
             });
 
-            // Add carousel functionality
             addCarouselControls();
         }
 
@@ -434,35 +432,26 @@
 
             section.appendChild(header);
             section.appendChild(moviesContainer);
-
             return section;
         }
 
-        // Create a movie card
+        // Create movie card
         function createMovieCard(movie) {
             const card = document.createElement('div');
             card.className = 'movie-card';
-
             card.innerHTML = `
                 <img src="${movie.image}" alt="${movie.title}" class="movie-poster">
                 <div class="movie-title">${movie.title}</div>
                 <div class="movie-info">
-                    <div class="rating">
-                        <span class="star">⭐</span>
-                        <span>${movie.rating}</span>
-                    </div>
-                    <div class="duration">
-                        <span>🕐</span>
-                        <span>${movie.duration}</span>
-                    </div>
+                    <div class="rating"><span class="star">⭐</span><span>${movie.rating}</span></div>
+                    <div class="duration"><span>🕐</span><span>${movie.duration}</span></div>
                     <div class="certification">${movie.certification}</div>
                 </div>
             `;
-
             return card;
         }
 
-        // Add carousel controls functionality
+        // Carousel controls
         function addCarouselControls() {
             document.querySelectorAll('.prev-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -481,13 +470,51 @@
             });
         }
 
-        // Newsletter form submission
+        // 🔍 Search functionality
+        const searchInput = document.querySelector('.search-box');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const mainContent = document.getElementById('main-content');
+
+            if (query === '') {
+                renderMovieSections(); // show all if empty
+                return;
+            }
+
+            const filteredMovies = allMoviesArray.filter(movie =>
+                movie.title.toLowerCase().includes(query)
+            );
+
+            mainContent.innerHTML = '';
+            const section = document.createElement('div');
+            section.className = 'movie-section';
+            const header = document.createElement('div');
+            header.className = 'section-header';
+            header.innerHTML = `<h2 class="section-title">Search Results</h2>`;
+            const moviesContainer = document.createElement('div');
+            moviesContainer.className = 'movies-container';
+
+            if (filteredMovies.length === 0) {
+                moviesContainer.innerHTML = `<div class="loading">No results found for "${query}".</div>`;
+            } else {
+                filteredMovies.forEach(movie => {
+                    const movieCard = createMovieCard(movie);
+                    moviesContainer.appendChild(movieCard);
+                });
+            }
+
+            section.appendChild(header);
+            section.appendChild(moviesContainer);
+            mainContent.appendChild(section);
+        });
+
+        // Newsletter
         document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
             e.preventDefault();
             alert('Thank you for subscribing!');
         });
 
-        // Load data on page load
+        // Load data
         loadData();
     </script>
 </body>
